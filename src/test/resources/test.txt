@@ -1,0 +1,19 @@
+spark-submit --master local[1] /mnt/c/Users/Goncalo/Desktop/work/dionysus/target/dionysus-1.0-SNAPSHOT-allinone.jar -f /mnt/c/Users/Goncalo/Desktop/work/dionysus/src/test/resources/test_data_file.csv -c /mnt/c/Users/Goncalo/Desktop/work/dionysus/src/test/resources/test_file.json
+
+
+import java.util.Properties
+import org.apache.spark.sql.{DataFrame, SparkSession}
+
+case class ApplicationConfiguration(sparkAppName: String, databaseURL: String, tableName: String)
+
+
+def readSourceFile(sparkSession: SparkSession, sourceFilePath: String): DataFrame = {
+    sparkSession.read.csv(sourceFilePath)
+}
+
+def saveToDataBase(dataFrame: DataFrame, applicationConfiguration: ApplicationConfiguration, connectionProperties: Properties = new Properties()): Unit = {
+    dataFrame.write.jdbc(
+      applicationConfiguration.databaseURL,
+      s"schema.${applicationConfiguration.tableName}",
+      connectionProperties)
+}

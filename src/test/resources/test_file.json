@@ -1,0 +1,5 @@
+{
+  "sparkAppName": "Spark Test",
+  "databaseURL": "jdbc:postgresql://localhost:5432/testing",
+  "tableName": "t1"
+}
